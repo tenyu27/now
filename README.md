@@ -2,7 +2,7 @@
 
 A premium, modern, and lightweight clock overlay for OBS. Designed for clarity and aesthetic appeal with a glassmorphism effect. Supports global timezones and deep customization.
 
-Hosted at: [time.tenyu.gg](https://time.tenyu.gg) (or your deployment URL)
+Hosted at: [time.tenyu.gg](https://time.tenyu.gg)
 
 ## Setup in OBS
 1. Create a new **Browser Source** in OBS.
