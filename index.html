@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clock Overlay</title>
+  <title>Modern Time Overlay</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -67,8 +67,9 @@
 
     .time-container {
       display: flex;
-      align-items: baseline;
-      gap: 8px;
+      align-items: flex-end;
+      gap: 10px;
+      white-space: nowrap;
     }
 
     #time {
@@ -81,16 +82,33 @@
     }
 
     #suffix {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 38px;
+      line-height: 1;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      /* Align with time text baseline */
+      margin-bottom: 4px;
+    }
+
+    #suffix .period {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    #suffix .tz {
       font-size: 18px;
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.8);
-      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.85);
     }
 
     #date {
       font-size: 18px;
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.85);
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-top: 4px;
@@ -180,7 +198,7 @@
         timeZoneName: 'short'
       }).formatToParts(now).find(p => p.type === 'timeZoneName').value;
 
-      suffixElement.textContent = use12h ? `${dayPeriod} ${tzPart}` : tzPart;
+      suffixElement.innerHTML = `<span class="period">${dayPeriod || '&nbsp;'}</span><span class="tz">${tzPart}</span>`;
 
       // Format Date
       dateElement.textContent = new Intl.DateTimeFormat('en-US', {
