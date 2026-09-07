@@ -15,7 +15,7 @@ Customize the clock by appending these to the URL (combine using `&`):
 
 - `?tz=America/Los_Angeles`: Set the timezone using a full **IANA Timezone Name**.
   - [List of all IANA Timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-  - Defaults to `America/Los_Angeles` if not specified.
+  - Defaults to browser timezone if not specified.
 - `?12h=true`: Switches to 12-hour format with AM/PM indicator.
 - `?scale=1.5`: Change size without losing quality (e.g., 2 for double size).
 - `?transparent=true`: Removes the glass background and border.
