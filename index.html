@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -142,15 +141,19 @@
     // URL Parameters handling
     const urlParams = new URLSearchParams(window.location.search);
 
-    const tzInput = urlParams.get('tz') || 'America/Los_Angeles';
-    let timeZone = tzInput;
+    // Default to the browser/device timezone when ?tz= is not specified
+    const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const tzInput = urlParams.get('tz');
+    let timeZone = tzInput || browserTimeZone;
 
-    // Validate timezone and fallback to PST if invalid
+    // Validate timezone and fall back to browser/device timezone if invalid
     try {
       new Intl.DateTimeFormat('en-US', { timeZone }).format(new Date());
     } catch (e) {
-      console.warn(`Invalid timezone "${timeZone}", falling back to America/Los_Angeles`);
-      timeZone = 'America/Los_Angeles';
+      console.warn(
+        `Invalid timezone "${timeZone}", falling back to browser timezone "${browserTimeZone}"`
+      );
+      timeZone = browserTimeZone;
     }
 
     // Scale support
@@ -161,7 +164,10 @@
 
     // Custom Styles
     if (urlParams.has('style')) {
-      widget.setAttribute('style', widget.getAttribute('style') + ';' + urlParams.get('style'));
+      widget.setAttribute(
+        'style',
+        widget.getAttribute('style') + ';' + urlParams.get('style')
+      );
     }
 
     if (urlParams.has('transparent')) {
@@ -188,7 +194,9 @@
       const hour = timeParts.find(p => p.type === 'hour').value;
       const minute = timeParts.find(p => p.type === 'minute').value;
       const second = timeParts.find(p => p.type === 'second').value;
-      const dayPeriod = use12h ? timeParts.find(p => p.type === 'dayPeriod').value : '';
+      const dayPeriod = use12h
+        ? timeParts.find(p => p.type === 'dayPeriod').value
+        : '';
 
       timeElement.textContent = `${hour}:${minute}:${second}`;
 
@@ -196,9 +204,13 @@
       const tzPart = new Intl.DateTimeFormat('en-US', {
         timeZone: timeZone,
         timeZoneName: 'short'
-      }).formatToParts(now).find(p => p.type === 'timeZoneName').value;
+      })
+        .formatToParts(now)
+        .find(p => p.type === 'timeZoneName').value;
 
-      suffixElement.innerHTML = `<span class="period">${dayPeriod || '&nbsp;'}</span><span class="tz">${tzPart}</span>`;
+      suffixElement.innerHTML =
+        `<span class="period">${dayPeriod || '&nbsp;'}</span>` +
+        `<span class="tz">${tzPart}</span>`;
 
       // Format Date
       dateElement.textContent = new Intl.DateTimeFormat('en-US', {
@@ -207,12 +219,13 @@
         month: 'short',
         day: 'numeric',
         timeZone: timeZone
-      }).format(now).toUpperCase();
+      })
+        .format(now)
+        .toUpperCase();
     }
 
     setInterval(updateClock, 1000);
     updateClock();
   </script>
 </body>
-
 </html>
